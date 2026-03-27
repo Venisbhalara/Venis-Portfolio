@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
-import CustomCursor from './components/ui/CustomCursor';
+
 import Preloader from './components/Preloader';
 import Hero    from './components/sections/Hero';
 
@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <div className="film-grain" aria-hidden="true" />
-      <CustomCursor />
+
       <Navbar />
       {isPreloading && <Preloader onComplete={() => setIsPreloading(false)} />}
       

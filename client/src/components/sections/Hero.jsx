@@ -71,10 +71,10 @@ function SocialLinks() {
 function ScrollIndicator() {
   return (
     <div className="hero-scroll" aria-hidden="true">
-      <span className="hero-scroll__label">Scroll</span>
-      <div className="hero-scroll__line">
+      <span className="hero-scroll__label"></span>
+      {/* <div className="hero-scroll__line">
         <div className="hero-scroll__dot" />
-      </div>
+      </div> */}
     </div>
   );
 }

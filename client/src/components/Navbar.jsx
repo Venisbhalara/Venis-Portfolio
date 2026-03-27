@@ -122,6 +122,7 @@ export default function Navbar() {
                 <a
                   href={href}
                   className={`navbar-link ${activeSection === href ? "active" : ""}`}
+                  onClick={() => setActiveSection(href)}
                 >
                   {label}
                 </a>
