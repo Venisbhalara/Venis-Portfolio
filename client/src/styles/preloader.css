@@ -1,0 +1,55 @@
+/* ═══════════════════════════════════════════════════════════
+   Preloader — Obsidian Kinetic
+═══════════════════════════════════════════════════════════ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #0e0e0e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #e5e2e1;
+}
+
+.preloader__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.preloader__logo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  overflow: hidden;
+  display: flex;
+}
+
+.preloader__logo span {
+  display: inline-block;
+  transform: translateY(100%);
+}
+
+.preloader__logo .accent {
+  color: #6C63FF;
+}
+
+/* ── Progress Bar ── */
+.preloader__bar-container {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.preloader__bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #6C63FF, #00D9FF);
+  transform-origin: left;
+}

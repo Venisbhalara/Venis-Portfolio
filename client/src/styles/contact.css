@@ -1,0 +1,236 @@
+/* ═══════════════════════════════════════════════════════════
+   Contact Section — Obsidian Kinetic Design System
+═══════════════════════════════════════════════════════════ */
+
+.contact {
+  background: #0e0e0e;
+  padding: 70px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background Elements ─────────────────────────────────── */
+.contact__glow {
+  position: absolute;
+  top: 0;
+  right: -20%;
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(
+    circle at center,
+    rgba(108, 99, 255, 0.06) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Left side (Info) ────────────────────────────────────── */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-heading {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #e5e2e1;
+  margin-bottom: 24px;
+}
+
+.contact-text {
+  font-size: 18px;
+  color: #918fa1;
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 48px;
+}
+
+/* Example link (Email / Social) */
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #c7c4d8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 250ms ease;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.contact-link svg {
+  color: #6C63FF;
+  transition: transform 250ms ease;
+}
+
+.contact-link:hover {
+  color: #6C63FF;
+}
+
+.contact-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* ── Right side (Form) ───────────────────────────────────── */
+.contact-form-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  will-change: transform, opacity;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Form Groups */
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #918fa1;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  transition: color 250ms ease;
+}
+
+/* Inputs */
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(70, 69, 85, 0.5);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-family: inherit;
+  font-size: 16px;
+  color: #e5e2e1;
+  transition: border-color 300ms ease, box-shadow 300ms ease, background 300ms ease;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #555467;
+  transition: opacity 300ms ease;
+}
+
+/* Focus states (Premium Glow) */
+.form-input:focus {
+  border-color: #6C63FF;
+  background: rgba(108, 99, 255, 0.03);
+  box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+}
+
+.form-input:focus::placeholder {
+  opacity: 0.5;
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+  color: #c7c4d8;
+}
+
+/* Textarea specifically */
+textarea.form-input {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* ── Submit Button ───────────────────────────────────────── */
+.contact-submit {
+  width: 100%;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Status Messages ─────────────────────────────────────── */
+.form-message {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: message-slide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes message-slide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-message--success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.form-message--error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .contact-wrapper {
+    gap: 40px;
+  }
+  .contact-form-card {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 50px 0;
+  }
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+  .contact-text {
+    margin-bottom: 32px;
+  }
+  .contact-form-card {
+    padding: 32px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-message { animation: none; }
+  .form-input { transition: none; }
+}

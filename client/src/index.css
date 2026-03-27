@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Global base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Disabled — Lenis handles this */
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #0a0a0a;
+  color: #f5f5f5;
+  line-height: 1.6;
+  /* Lenis requires overflow on html/body to be unset */
+  overflow-x: hidden;
+}
+
+/* ── Lenis smooth scroll override ───────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ── Scroll Animation Base Classes ──────────────────────── */
+
+/* fade-up: element fades in and slides up */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+/* slide-in-left */
+.slide-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+/* slide-in-right */
+.slide-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+/* fade-in: just opacity */
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+
+/* scale-up: subtle scale reveal */
+.scale-up {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+/* is-visible triggers the animation */
+.fade-up.is-visible,
+.slide-left.is-visible,
+.slide-right.is-visible,
+.fade-in.is-visible,
+.scale-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger children delays (add to parent element) */
+.stagger > *:nth-child(1) { transition-delay: 0ms; }
+.stagger > *:nth-child(2) { transition-delay: 100ms; }
+.stagger > *:nth-child(3) { transition-delay: 200ms; }
+.stagger > *:nth-child(4) { transition-delay: 300ms; }
+.stagger > *:nth-child(5) { transition-delay: 400ms; }
+.stagger > *:nth-child(6) { transition-delay: 500ms; }
+
+/* ── Responsive: reduce motion on mobile ────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .slide-left, .slide-right, .fade-in, .scale-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+

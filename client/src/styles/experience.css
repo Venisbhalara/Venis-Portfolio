@@ -1,0 +1,233 @@
+/* ═══════════════════════════════════════════════════════════
+   Experience Section — Obsidian Kinetic
+═══════════════════════════════════════════════════════════ */
+
+.experience {
+  position: relative;
+  padding: 80px 0;
+  background-color: #0e0e0e; /* Obsidian dark */
+  color: #e5e2e1;
+  overflow: hidden;
+}
+
+/* Background Gradients */
+.experience::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(108, 99, 255, 0.08) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.experience-heading {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 80px;
+  letter-spacing: -0.04em;
+  max-width: 800px;
+}
+
+/* ── Skills Marquee / Grid ──────────────────────────────── */
+.experience-skills {
+  margin-bottom: 120px;
+}
+
+.skills-title {
+  font-size: 14px;
+  color: #918fa1;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.skill-tag {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #e5e2e1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.skill-tag:hover {
+  background: rgba(108, 99, 255, 0.1);
+  border-color: rgba(108, 99, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(108, 99, 255, 0.2);
+}
+
+/* ── Timeline ────────────────────────────────────────────── */
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  position: relative;
+}
+
+/* The SVG line that connects everything */
+.timeline-svg-wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 24px; /* Default left offset */
+  width: 4px;
+  z-index: 0;
+}
+
+.timeline-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.timeline-path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.timeline-path-active {
+  fill: none;
+  stroke: url(#timeline-gradient);
+  stroke-width: 3;
+  /* GSAP will animate stroke-dashoffset */
+}
+
+/* ── Timeline Item ───────────────────────────────────────── */
+.exp-item {
+  display: flex;
+  gap: 48px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Left: Connector */
+.exp-connector {
+  position: relative;
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.exp-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0e0e0e;
+  border: 3px solid #6C63FF;
+  box-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
+  position: relative;
+  top: 8px; /* Align with heading */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.exp-item:hover .exp-dot {
+  transform: scale(1.5);
+  background: #6C63FF;
+}
+
+/* Right: Content */
+.exp-content {
+  flex: 1;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  backdrop-filter: blur(16px);
+  will-change: transform, opacity;
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+.exp-item:hover .exp-content {
+  transform: translateX(8px);
+  border-color: rgba(108, 99, 255, 0.2);
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.exp-role {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #e5e2e1;
+  margin: 0 0 8px 0;
+}
+
+.exp-company {
+  font-size: 18px;
+  font-weight: 500;
+  color: #00D9FF;
+}
+
+.exp-duration {
+  font-size: 14px;
+  font-weight: 600;
+  color: #918fa1;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+}
+
+.exp-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #aeb2b5;
+  margin-bottom: 24px;
+}
+
+.exp-metrics {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exp-metrics li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #e5e2e1;
+}
+
+.exp-metrics li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #6C63FF;
+  font-weight: bold;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .experience { padding: 50px 0; }
+  .exp-item { gap: 24px; }
+  .exp-content { padding: 24px; }
+  .exp-header { flex-direction: column; align-items: flex-start; }
+  .timeline-svg-wrap { left: 12px; }
+  .exp-connector { width: 24px; justify-content: center; }
+  .exp-dot { width: 12px; height: 12px; }
+}

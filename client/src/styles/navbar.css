@@ -1,0 +1,209 @@
+/* ═══════════════════════════════════════════════════════════
+   Navbar — Obsidian Kinetic
+═══════════════════════════════════════════════════════════ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 100;
+  transition:
+    background 0.4s ease,
+    backdrop-filter 0.4s ease,
+    border-bottom 0.4s ease;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+
+.navbar--scrolled {
+  background: rgba(14, 14, 14, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(108, 99, 255, 0.15);
+}
+
+.navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* ── Logo ────────────────────────────────────────────────── */
+.navbar-logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #e5e2e1;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo span {
+  color: #6c63ff;
+}
+
+/* ── Desktop Nav Links ───────────────────────────────────── */
+.navbar-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #918fa1;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover,
+.navbar-link.active {
+  color: #e5e2e1;
+}
+
+/* Accent dot indicator for active link */
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #00d9ff;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-link.active::after {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── Mobile Menu Button ──────────────────────────────────── */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 200; /* above mobile overlay */
+}
+
+.menu-toggle-icon {
+  position: relative;
+  width: 24px;
+  height: 2px;
+  background: #e5e2e1;
+  transition: background 0.3s ease;
+}
+
+.menu-toggle-icon::before,
+.menu-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #e5e2e1;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-toggle-icon::before {
+  transform: translateY(-6px);
+}
+.menu-toggle-icon::after {
+  transform: translateY(6px);
+}
+
+/* Open state for hamburger */
+.menu-toggle--open .menu-toggle-icon {
+  background: transparent;
+}
+.menu-toggle--open .menu-toggle-icon::before {
+  transform: rotate(45deg);
+}
+.menu-toggle--open .menu-toggle-icon::after {
+  transform: rotate(-45deg);
+}
+
+/* ── Mobile Overlay Menu ─────────────────────────────────── */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #0e0e0e;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none; /* hidden by default */
+  visibility: hidden;
+}
+
+.mobile-menu--open {
+  /* Toggled via GSAP instead of pure CSS for smoother animation, 
+     but keeping basics here */
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-link {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #918fa1;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: #e5e2e1;
+}
+
+/* Accent for mobile */
+.mobile-nav-link.active {
+  position: relative;
+}
+.mobile-nav-link.active::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00d9ff;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}

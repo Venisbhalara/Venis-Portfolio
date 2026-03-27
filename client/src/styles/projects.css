@@ -1,0 +1,405 @@
+/* ═══════════════════════════════════════════════════════════
+   Projects Section — Obsidian Kinetic Design System
+   Colours: #0e0e0e bg · #6C63FF primary · #00D9FF accent
+═══════════════════════════════════════════════════════════ */
+
+/* ── Section ─────────────────────────────────────────────── */
+.projects {
+  background: #0e0e0e;
+  padding: 60px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.projects__glow {
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 217, 255, 0.055) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.projects-header {
+  margin-bottom: 72px;
+  position: relative;
+  z-index: 1;
+}
+
+.projects-heading {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: #e5e2e1;
+  max-width: 580px;
+  margin-bottom: 16px;
+}
+
+.projects-sub {
+  font-size: 16px;
+  color: #918fa1;
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+/* ── Grid ────────────────────────────────────────────────── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.project-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(108, 99, 255, 0.12);
+  border-radius: 16px;
+  padding: 36px 32px 28px;
+  cursor: pointer;
+  transition: border-color 320ms ease, box-shadow 320ms ease;
+  /* 3D tilt uses inline JS transform — no CSS transform here */
+  transform-style: preserve-3d;
+  will-change: transform;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(108, 99, 255, 0.07) 0%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 350ms ease;
+  pointer-events: none;
+}
+
+.project-card:hover {
+  border-color: rgba(108, 99, 255, 0.32);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(108, 99, 255, 0.08);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Card top line ───────────────────────────────────────── */
+.project-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.project-card__category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6C63FF;
+  background: rgba(108, 99, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.project-card__arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555467;
+  border: 1px solid rgba(70, 69, 85, 0.3);
+  transition: color 250ms ease, border-color 250ms ease,
+              background 250ms ease, transform 250ms ease;
+  flex-shrink: 0;
+}
+
+.project-card:hover .project-card__arrow {
+  color: #6C63FF;
+  border-color: rgba(108, 99, 255, 0.4);
+  background: rgba(108, 99, 255, 0.1);
+  transform: translate(2px, -2px);
+}
+
+/* ── Card title ──────────────────────────────────────────── */
+.project-card__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #e5e2e1;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+/* ── Card description ────────────────────────────────────── */
+.project-card__desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #918fa1;
+  flex: 1;
+  margin-bottom: 28px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Tech stack tags ─────────────────────────────────────── */
+.project-card__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: #c7c4d8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(70, 69, 85, 0.35);
+  border-radius: 6px;
+  padding: 3px 9px;
+  letter-spacing: 0.01em;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+
+.project-card:hover .project-tag {
+  border-color: rgba(108, 99, 255, 0.2);
+  background: rgba(108, 99, 255, 0.05);
+}
+
+/* ── Modal backdrop ──────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 10, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: none; /* GSAP handles */
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Modal panel ─────────────────────────────────────────── */
+.modal-panel {
+  position: relative;
+  background: #111116;
+  border: 1px solid rgba(108, 99, 255, 0.18);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 760px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 52px 56px 48px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7),
+              0 0 0 1px rgba(108, 99, 255, 0.08);
+  will-change: transform, opacity;
+}
+
+/* custom scrollbar in modal */
+.modal-panel::-webkit-scrollbar { width: 4px; }
+.modal-panel::-webkit-scrollbar-track { background: transparent; }
+.modal-panel::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.3); border-radius: 99px; }
+
+/* ── Modal close ─────────────────────────────────────────── */
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(70, 69, 85, 0.4);
+  background: transparent;
+  color: #918fa1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+
+.modal-close:hover {
+  color: #e5e2e1;
+  border-color: rgba(108, 99, 255, 0.4);
+  background: rgba(108, 99, 255, 0.1);
+}
+
+/* ── Modal content ───────────────────────────────────────── */
+.modal-category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6C63FF;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #e5e2e1;
+  line-height: 1.2;
+  margin-bottom: 32px;
+}
+
+.modal-section {
+  margin-bottom: 28px;
+}
+
+.modal-section__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #464555;
+  margin-bottom: 10px;
+}
+
+.modal-section__text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #c7c4d8;
+}
+
+/* ── Outcome metrics row ─────────────────────────────────── */
+.modal-outcome {
+  background: rgba(108, 99, 255, 0.05);
+  border: 1px solid rgba(108, 99, 255, 0.14);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.modal-outcome .modal-section__text {
+  color: #00D9FF;
+  font-weight: 500;
+}
+
+/* ── Tech stack in modal ─────────────────────────────────── */
+.modal-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+
+.modal-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: #c7c4d8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(70, 69, 85, 0.35);
+  border-radius: 8px;
+  padding: 5px 12px;
+}
+
+/* ── Modal CTA links ─────────────────────────────────────── */
+.modal-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── Loading / Error states ──────────────────────────────── */
+.projects-loading,
+.projects-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: 16px;
+  color: #918fa1;
+  font-size: 15px;
+}
+
+.projects-spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(108, 99, 255, 0.15);
+  border-top-color: #6C63FF;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .projects {
+    padding: 48px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .projects {
+    padding: 40px 0;
+  }
+  .projects-header {
+    margin-bottom: 48px;
+  }
+  .project-card {
+    padding: 28px 24px 22px;
+  }
+  .modal-panel {
+    padding: 36px 24px 28px;
+    border-radius: 14px;
+    max-height: 92vh;
+  }
+  .modal-links {
+    flex-direction: column;
+  }
+  .modal-links .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .project-card { transition: none; transform: none !important; }
+  .project-card__arrow { transition: none; }
+  .projects-spinner { animation: none; }
+}

@@ -1,0 +1,332 @@
+/* ═══════════════════════════════════════════════════════════
+   About Section Styles — Obsidian Kinetic design system
+═══════════════════════════════════════════════════════════ */
+
+/* ── Shared label utility ────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6C63FF;
+  margin-bottom: 16px;
+}
+
+/* ── Section wrapper ─────────────────────────────────── */
+.about {
+  background: #131313;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+/* ── Heading ─────────────────────────────────────────── */
+.about-heading {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: #e5e2e1;
+  max-width: 680px;
+  margin-bottom: 72px;
+}
+
+/* ── Two-column top block ────────────────────────────── */
+.about-top {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 64px;
+  align-items: center;
+  margin-bottom: 96px;
+}
+
+/* ── Bio text ────────────────────────────────────────── */
+.about-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.about-bio__line {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #c7c4d8;
+}
+
+.about-bio__line strong {
+  color: #e5e2e1;
+  font-weight: 600;
+}
+
+/* ── Stats ───────────────────────────────────────────── */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 12px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(70, 69, 85, 0.2);
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-stat__value {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #6C63FF;
+  line-height: 1;
+}
+
+.about-stat__label {
+  font-size: 13px;
+  color: #918fa1;
+  letter-spacing: 0.02em;
+}
+
+/* ── 3D Model container ──────────────────────────────── */
+.about-model-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rotating-model {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+}
+
+.rotating-model canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rotating-model__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(108, 99, 255, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.about-model-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  background: rgba(108, 99, 255, 0.05);
+  border-radius: 50%;
+}
+
+/* ── Skills ──────────────────────────────────────────── */
+.about-skills {
+  margin-bottom: 96px;
+}
+
+.about-skills__title,
+.about-timeline__title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e5e2e1;
+  letter-spacing: -0.01em;
+  margin-bottom: 36px;
+}
+
+.about-skills__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 64px;
+}
+
+.about-skill {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.about-skill__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.about-skill__name {
+  font-size: 13px;
+  color: #c7c4d8;
+  font-weight: 500;
+}
+
+.about-skill__pct {
+  font-size: 12px;
+  color: #6C63FF;
+  font-weight: 600;
+}
+
+.about-skill__track {
+  height: 2px;
+  background: rgba(70, 69, 85, 0.35);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.about-skill__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6C63FF, #00D9FF);
+  border-radius: 99px;
+  transform-origin: left center;
+}
+
+/* ── Timeline ────────────────────────────────────────── */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Vertical spine line */
+.timeline-line {
+  position: absolute;
+  left: 7px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    #6C63FF,
+    rgba(108, 99, 255, 0.3) 60%,
+    transparent
+  );
+  transform-origin: top center;
+}
+
+/* Each entry */
+.timeline-entry {
+  position: relative;
+  padding: 0 0 48px 28px;
+  display: flex;
+  gap: 20px;
+}
+
+.timeline-entry__dot {
+  position: absolute;
+  left: -2px;
+  top: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid #131313;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.timeline-entry__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-entry__year {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.timeline-entry__role {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e5e2e1;
+  letter-spacing: -0.01em;
+}
+
+.timeline-entry__company {
+  font-weight: 400;
+  color: #918fa1;
+  font-size: 16px;
+}
+
+.timeline-entry__detail {
+  font-size: 14px;
+  color: #c7c4d8;
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .about-top {
+    grid-template-columns: 1fr 340px;
+    gap: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 40px 0;
+  }
+
+  .about-top {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  /* Model goes top on mobile — above bio */
+  .about-model-wrap {
+    order: -1;
+  }
+
+  .rotating-model {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-skills__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-heading {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .timeline {
+    padding-left: 24px;
+  }
+
+  .timeline-entry {
+    padding-bottom: 36px;
+    padding-left: 20px;
+  }
+
+  .timeline-entry__role {
+    font-size: 16px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .about-skill__fill { transform: none !important; }
+  .timeline-line { transform: none !important; }
+}
