@@ -1,49 +1,53 @@
-import { useRef, lazy, Suspense } from 'react';
-import { useGSAP } from '../../hooks/useGSAP';
-import { gsap, ScrollTrigger } from '../../lib/gsap.config';
+import { useRef, lazy, Suspense } from "react";
+import { useGSAP } from "../../hooks/useGSAP";
+import { gsap, ScrollTrigger } from "../../lib/gsap.config";
 
-const RotatingModel = lazy(() => import('../three/RotatingModel'));
+const RotatingModel = lazy(() => import("../three/RotatingModel"));
 
 /* ─────────────────────────────────────────────────────────────
    Data
 ───────────────────────────────────────────────────────────────*/
 const STATS = [
-  { value: '6+',   label: 'Years Experience' },
-  { value: '50+',  label: 'Projects Shipped' },
-  { value: '100k+',label: 'Users Served'     },
-  { value: '99.9%',label: 'Uptime SLA'       },
+  { value: "6+", label: "Years Experience" },
+  { value: "50+", label: "Projects Shipped" },
+  { value: "100k+", label: "Users Served" },
+  { value: "99.9%", label: "Uptime SLA" },
 ];
 
 const SKILLS = [
-  { name: 'Node.js',     pct: 95 },
-  { name: 'React',       pct: 92 },
-  { name: 'TypeScript',  pct: 88 },
-  { name: 'AWS',         pct: 82 },
-  { name: 'Kubernetes',  pct: 76 },
-  { name: 'MySQL',       pct: 85 },
+  { name: "JavaScript", pct: 95 },
+  { name: "Node.js", pct: 92 },
+  { name: "Express.js", pct: 88 },
+  { name: "MySQL", pct: 82 },
+  { name: "MongoDB", pct: 76 },
+  { name: "PostgreSQL", pct: 85 },
+  { name: "AWS", pct: 82 },
+  { name: "Kubernetes", pct: 76 },
 ];
 
 const TIMELINE = [
   {
-    year: '2022 – Now',
-    role: 'Senior SDE',
-    company: 'Amazon',
-    detail: 'AWS S3 Core Infrastructure — reduced P99 latency from 240ms → 38ms.',
-    color: '#6C63FF',
+    year: "2022 – Now",
+    role: "Senior SDE",
+    company: "Amazon",
+    detail:
+      "AWS S3 Core Infrastructure — reduced P99 latency from 240ms → 38ms.",
+    color: "#6C63FF",
   },
   {
-    year: '2020 – 2022',
-    role: 'SDE II',
-    company: 'Flipkart',
-    detail: 'Built real-time fraud detection pipeline · 1M+ transactions / day.',
-    color: '#00D9FF',
+    year: "2020 – 2022",
+    role: "SDE II",
+    company: "Flipkart",
+    detail:
+      "Built real-time fraud detection pipeline · 1M+ transactions / day.",
+    color: "#00D9FF",
   },
   {
-    year: '2018 – 2020',
-    role: 'SDE I',
-    company: 'Razorpay',
-    detail: 'Core API team · webhook delivery system · 99.99 % reliability.',
-    color: '#918fa1',
+    year: "2018 – 2020",
+    role: "SDE I",
+    company: "Razorpay",
+    detail: "Core API team · webhook delivery system · 99.99 % reliability.",
+    color: "#918fa1",
   },
 ];
 
@@ -54,22 +58,26 @@ function SkillBar({ name, pct, index }) {
   const barRef = useRef(null);
 
   // Animate on scroll using ScrollTrigger.create
-  useGSAP((ctx) => {
-    ctx.add(() => {
-      gsap.from(barRef.current, {
-        scaleX: 0,
-        transformOrigin: 'left center',
-        duration: 1.1,
-        ease: 'power3.out',
-        delay: index * 0.08,
-        scrollTrigger: {
-          trigger: barRef.current,
-          start: 'top 90%',
-          toggleActions: 'play none none none',
-        },
+  useGSAP(
+    (ctx) => {
+      ctx.add(() => {
+        gsap.from(barRef.current, {
+          scaleX: 0,
+          transformOrigin: "left center",
+          duration: 1.1,
+          ease: "power3.out",
+          delay: index * 0.08,
+          scrollTrigger: {
+            trigger: barRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
       });
-    });
-  }, barRef, []);
+    },
+    barRef,
+    [],
+  );
 
   return (
     <div className="about-skill">
@@ -94,22 +102,26 @@ function SkillBar({ name, pct, index }) {
 function TimelineEntry({ entry, index }) {
   const ref = useRef(null);
 
-  useGSAP((ctx) => {
-    ctx.add(() => {
-      gsap.from(ref.current, {
-        x: -32,
-        opacity: 0,
-        duration: 0.75,
-        ease: 'power3.out',
-        delay: index * 0.12,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-        },
+  useGSAP(
+    (ctx) => {
+      ctx.add(() => {
+        gsap.from(ref.current, {
+          x: -32,
+          opacity: 0,
+          duration: 0.75,
+          ease: "power3.out",
+          delay: index * 0.12,
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 88%",
+            toggleActions: "play none none none",
+          },
+        });
       });
-    });
-  }, ref, []);
+    },
+    ref,
+    [],
+  );
 
   return (
     <div ref={ref} className="timeline-entry">
@@ -120,10 +132,7 @@ function TimelineEntry({ entry, index }) {
       />
 
       <div className="timeline-entry__body">
-        <p
-          className="timeline-entry__year"
-          style={{ color: entry.color }}
-        >
+        <p className="timeline-entry__year" style={{ color: entry.color }}>
           {entry.year}
         </p>
         <h4 className="timeline-entry__role">
@@ -140,77 +149,102 @@ function TimelineEntry({ entry, index }) {
    About — main exported section
 ───────────────────────────────────────────────────────────────*/
 export default function About() {
-  const isDesktop = typeof window !== 'undefined' ? window.innerWidth > 768 : true;
-  const sectionRef   = useRef(null);
-  const headingRef   = useRef(null);
-  const bioRef       = useRef(null);
-  const statsRef     = useRef(null);
-  const skillsRef    = useRef(null);
-  const timelineRef  = useRef(null);
+  const isDesktop =
+    typeof window !== "undefined" ? window.innerWidth > 768 : true;
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const bioRef = useRef(null);
+  const statsRef = useRef(null);
+  const skillsRef = useRef(null);
+  const timelineRef = useRef(null);
 
   /* ── Scroll-triggered text reveals ──────────────────────*/
-  useGSAP((ctx) => {
-    ctx.add(() => {
+  useGSAP(
+    (ctx) => {
+      ctx.add(() => {
+        // Section label + heading
+        gsap.from(".about-label", {
+          y: 16,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".about-label", start: "top 88%" },
+        });
 
-      // Section label + heading
-      gsap.from('.about-label', {
-        y: 16, opacity: 0, duration: 0.6, ease: 'power3.out',
-        scrollTrigger: { trigger: '.about-label', start: 'top 88%' },
-      });
+        // Heading — split into lines via wrapping
+        gsap.from(headingRef.current, {
+          y: 40,
+          opacity: 0,
+          duration: 0.85,
+          ease: "power4.out",
+          scrollTrigger: { trigger: headingRef.current, start: "top 85%" },
+        });
 
-      // Heading — split into lines via wrapping
-      gsap.from(headingRef.current, {
-        y: 40, opacity: 0, duration: 0.85, ease: 'power4.out',
-        scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
-      });
+        // Bio paragraph — character-theatrical entrance
+        gsap.from(".about-bio__line", {
+          y: 22,
+          opacity: 0,
+          duration: 0.65,
+          ease: "power3.out",
+          stagger: 0.1,
+          scrollTrigger: { trigger: bioRef.current, start: "top 85%" },
+        });
 
-      // Bio paragraph — character-theatrical entrance
-      gsap.from('.about-bio__line', {
-        y: 22, opacity: 0, duration: 0.65, ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: bioRef.current, start: 'top 85%' },
-      });
+        // Stats counter effect
+        gsap.from(".about-stat", {
+          y: 20,
+          opacity: 0,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: "back.out(1.2)",
+          scrollTrigger: { trigger: statsRef.current, start: "top 88%" },
+        });
 
-      // Stats counter effect
-      gsap.from('.about-stat', {
-        y: 20, opacity: 0, duration: 0.55, stagger: 0.1, ease: 'back.out(1.2)',
-        scrollTrigger: { trigger: statsRef.current, start: 'top 88%' },
-      });
+        // Skills section heading
+        gsap.from(".about-skills__title", {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: skillsRef.current, start: "top 88%" },
+        });
 
-      // Skills section heading
-      gsap.from('.about-skills__title', {
-        y: 20, opacity: 0, duration: 0.6, ease: 'power3.out',
-        scrollTrigger: { trigger: skillsRef.current, start: 'top 88%' },
-      });
+        // Timeline heading
+        gsap.from(".about-timeline__title", {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: timelineRef.current, start: "top 88%" },
+        });
 
-      // Timeline heading
-      gsap.from('.about-timeline__title', {
-        y: 20, opacity: 0, duration: 0.6, ease: 'power3.out',
-        scrollTrigger: { trigger: timelineRef.current, start: 'top 88%' },
+        // Timeline line draw
+        gsap.from(".timeline-line", {
+          scaleY: 0,
+          transformOrigin: "top center",
+          duration: 1.2,
+          ease: "power3.inOut",
+          scrollTrigger: { trigger: timelineRef.current, start: "top 80%" },
+        });
       });
-
-      // Timeline line draw
-      gsap.from('.timeline-line', {
-        scaleY: 0, transformOrigin: 'top center', duration: 1.2, ease: 'power3.inOut',
-        scrollTrigger: { trigger: timelineRef.current, start: 'top 80%' },
-      });
-    });
-  }, sectionRef, []);
+    },
+    sectionRef,
+    [],
+  );
 
   return (
     <section ref={sectionRef} className="about" id="about" aria-label="About">
       <div className="container">
-
         {/* ── Header ────────────────────────────────────── */}
         <p className="about-label section-label">About Me</p>
         <h2 ref={headingRef} className="about-heading">
-          Crafting exceptional digital<br />
+          Crafting exceptional digital
+          <br />
           experiences for over 6 years.
         </h2>
 
         {/* ── Two-column: Bio + 3D Model ─────────────────*/}
         <div className="about-top">
-
           {/* Left — Bio */}
           <div ref={bioRef} className="about-bio">
             <p className="about-bio__line">
@@ -219,9 +253,10 @@ export default function About() {
               web applications.
             </p>
             <p className="about-bio__line">
-              I've shipped products used by <strong>millions of users across
-              40+ countries</strong> and consistently optimised critical paths
-              that directly impacted revenue and reliability.
+              I've shipped products used by{" "}
+              <strong>millions of users across 40+ countries</strong> and
+              consistently optimised critical paths that directly impacted
+              revenue and reliability.
             </p>
             <p className="about-bio__line">
               Currently building next‑generation developer tooling at Amazon,
@@ -247,7 +282,13 @@ export default function About() {
                 <RotatingModel />
               </Suspense>
             ) : (
-              <div className="about-model-placeholder" style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '50%' }} />
+              <div
+                className="about-model-placeholder"
+                style={{
+                  background: "rgba(255,255,255,0.02)",
+                  borderRadius: "50%",
+                }}
+              />
             )}
           </div>
         </div>
@@ -273,7 +314,6 @@ export default function About() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
