@@ -20,9 +20,6 @@ const SKILLS = [
   { name: "Express.js", pct: 88 },
   { name: "MySQL", pct: 82 },
   { name: "MongoDB", pct: 76 },
-  { name: "PostgreSQL", pct: 85 },
-  { name: "AWS", pct: 82 },
-  { name: "Kubernetes", pct: 76 },
 ];
 
 const TIMELINE = [
