@@ -20,13 +20,16 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Three.js in its own cached chunk (~873KB, loaded lazily)
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          // GSAP in own chunk
-          gsap: ['gsap'],
-          // React runtime
-          vendor: ['react', 'react-dom'],
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
+            return 'three';
+          }
+          if (id.includes('node_modules/gsap')) {
+            return 'gsap';
+          }
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor';
+          }
         },
       },
     },

@@ -1,4 +1,4 @@
-wwimport { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from '../../lib/gsap.config';
 import { useGSAP } from '../../hooks/useGSAP';
 
