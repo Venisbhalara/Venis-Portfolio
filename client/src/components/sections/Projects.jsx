@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+wwimport { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from '../../lib/gsap.config';
 import { useGSAP } from '../../hooks/useGSAP';
 
@@ -15,30 +15,45 @@ function useTilt(ref) {
     const el = ref.current;
     if (!el || window.innerWidth < 768) return;
 
-    const onMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const rotX = ((y - cy) / cy) * -7;   // max ±7deg
-      const rotY = ((x - cx) / cx) * 9;    // max ±9deg
-      const pctX = ((x / rect.width) * 100).toFixed(1);
-      const pctY = ((y / rect.height) * 100).toFixed(1);
+    let rafId = null;
+    let latestX = 0;
+    let latestY = 0;
 
-      gsap.to(el, {
-        rotateX: rotX,
-        rotateY: rotY,
-        scale: 1.02,
-        duration: 0.4,
-        ease: 'power2.out',
-        transformPerspective: 900,
+    const onMove = (e) => {
+      latestX = e.clientX;
+      latestY = e.clientY;
+
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const x = latestX - rect.left;
+        const y = latestY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotX = ((y - cy) / cy) * -7;   // max ±7deg
+        const rotY = ((x - cx) / cx) * 9;    // max ±9deg
+        const pctX = ((x / rect.width) * 100).toFixed(1);
+        const pctY = ((y / rect.height) * 100).toFixed(1);
+
+        gsap.to(el, {
+          rotateX: rotX,
+          rotateY: rotY,
+          scale: 1.02,
+          duration: 0.4,
+          ease: 'power2.out',
+          transformPerspective: 900,
+        });
+        el.style.setProperty('--mx', `${pctX}%`);
+        el.style.setProperty('--my', `${pctY}%`);
+        rafId = null;
       });
-      el.style.setProperty('--mx', `${pctX}%`);
-      el.style.setProperty('--my', `${pctY}%`);
     };
 
     const onLeave = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
       gsap.to(el, {
         rotateX: 0, rotateY: 0, scale: 1,
         duration: 0.55, ease: 'power3.out',

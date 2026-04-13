@@ -1,12 +1,12 @@
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useRef, useMemo, useEffect, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 /* ─────────────────────────────────────────────────────────────
-   Particles mesh — a field of 1200 drifting points arranged in
-   a rough sphere, slowly rotating. On mobile we halve the count.
+   Particles mesh — drifting points in a sphere.
+   PERF: Reduced count (700 desktop / 300 mobile), capped DPR at 1.5.
 ───────────────────────────────────────────────────────────────*/
-function Particles({ count = 1200 }) {
+function Particles({ count = 700 }) {
   const mesh = useRef(null);
   const light = useRef(null);
 
@@ -15,27 +15,26 @@ function Particles({ count = 1200 }) {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
 
-    const colorA = new THREE.Color('#6C63FF'); // primary violet
-    const colorB = new THREE.Color('#00D9FF'); // cyan accent
-    const colorC = new THREE.Color('#ffffff'); // white
+    const colorA = new THREE.Color("#6C63FF"); // primary violet
+    const colorB = new THREE.Color("#00D9FF"); // cyan accent
+    const colorC = new THREE.Color("#ffffff"); // white
 
     for (let i = 0; i < count; i++) {
-      // Distribute in a sphere shell
       const r = 8 + Math.random() * 14;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
 
-      pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       pos[i * 3 + 2] = r * Math.cos(phi);
 
-      // Mix colours based on position
       const t = Math.random();
-      const c = t < 0.5
-        ? colorA.clone().lerp(colorB, t * 2)
-        : colorB.clone().lerp(colorC, (t - 0.5) * 2);
+      const c =
+        t < 0.5
+          ? colorA.clone().lerp(colorB, t * 2)
+          : colorB.clone().lerp(colorC, (t - 0.5) * 2);
 
-      col[i * 3]     = c.r;
+      col[i * 3] = c.r;
       col[i * 3 + 1] = c.g;
       col[i * 3 + 2] = c.b;
     }
@@ -62,14 +61,8 @@ function Particles({ count = 1200 }) {
       <pointLight ref={light} intensity={1.5} color="#6C63FF" distance={30} />
       <points ref={mesh}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-          <bufferAttribute
-            attach="attributes-color"
-            args={[colors, 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
         <pointsMaterial
           size={0.06}
@@ -86,7 +79,7 @@ function Particles({ count = 1200 }) {
 
 /* ─────────────────────────────────────────────────────────────
    Floating geometric rings — two tori that counter-rotate.
-   Gives a subtle sense of depth without being distracting.
+   PERF: Reduced tube segments from 100 → 60.
 ───────────────────────────────────────────────────────────────*/
 function FloatingRings() {
   const ring1 = useRef(null);
@@ -106,15 +99,15 @@ function FloatingRings() {
 
   return (
     <>
-      {/* Outer ring */}
+      {/* Outer ring — 60 tube segments instead of 100 */}
       <mesh ref={ring1} position={[4, 1, -6]}>
-        <torusGeometry args={[2.4, 0.015, 16, 100]} />
+        <torusGeometry args={[2.4, 0.015, 12, 60]} />
         <meshBasicMaterial color="#6C63FF" transparent opacity={0.18} />
       </mesh>
 
       {/* Inner ring */}
       <mesh ref={ring2} position={[-3, -1, -4]}>
-        <torusGeometry args={[1.5, 0.012, 16, 100]} />
+        <torusGeometry args={[1.5, 0.012, 12, 60]} />
         <meshBasicMaterial color="#00D9FF" transparent opacity={0.14} />
       </mesh>
     </>
@@ -123,31 +116,52 @@ function FloatingRings() {
 
 /* ─────────────────────────────────────────────────────────────
    ParticleField — exported canvas container.
-   Reduces particle count on mobile for performance.
+   PERF: Pauses WebGL render loop when Hero section is off-screen
+   via IntersectionObserver — saves GPU when user scrolls away.
 ───────────────────────────────────────────────────────────────*/
 export default function ParticleField() {
   const isMobile = window.innerWidth < 768;
-  const count = isMobile ? 500 : 1200;
+  const count = isMobile ? 300 : 700;
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Pause rendering when the hero canvas is off-screen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 18], fov: 60 }}
-      dpr={[1, isMobile ? 1.5 : 2]}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-      }}
-      gl={{
-        antialias: !isMobile,
-        alpha: true,
-        powerPreference: 'high-performance',
-      }}
-    >
-      <Particles count={count} />
-      {!isMobile && <FloatingRings />}
-    </Canvas>
+    <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
+      <Canvas
+        camera={{ position: [0, 0, 18], fov: 60 }}
+        /* Cap DPR at 1.5 — was [1,2] which was very expensive */
+        dpr={[1, 1.5]}
+        /* "demand" = only re-render when frameloop is active */
+        frameloop={isVisible ? "always" : "demand"}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+        }}
+        gl={{
+          antialias: !isMobile,
+          alpha: true,
+          powerPreference: "high-performance",
+        }}
+      >
+        <Particles count={count} />
+        {!isMobile && <FloatingRings />}
+      </Canvas>
+    </div>
   );
 }

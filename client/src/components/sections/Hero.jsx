@@ -165,14 +165,27 @@ export default function Hero({ isReady = true }) {
     const el = contentRef.current;
     if (!el || window.innerWidth < 768) return;
 
+    let rafId = null;
+    let latestX = 0;
+    let latestY = 0;
+
     const handleMove = (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 12;
-      const y = (e.clientY / window.innerHeight - 0.5) * 8;
-      gsap.to(el, { x, y, duration: 1.2, ease: "power1.out" });
+      latestX = (e.clientX / window.innerWidth - 0.5) * 12;
+      latestY = (e.clientY / window.innerHeight - 0.5) * 8;
+
+      // Only schedule one RAF update at a time — prevents queuing 100s of gsap calls
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        gsap.to(el, { x: latestX, y: latestY, duration: 1.2, ease: "power1.out" });
+        rafId = null;
+      });
     };
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (

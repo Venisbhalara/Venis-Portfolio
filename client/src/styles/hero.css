@@ -32,6 +32,10 @@
   inset: 0;
   z-index: 0;
   opacity: 0.85;
+  /* Isolate on own compositor layer — prevents canvas repaints bleeding */
+  will-change: transform;
+  transform: translateZ(0);
+  contain: strict;
 }
 
 /* ── Accent radial glow top-right ─────────────────────  */
@@ -61,6 +65,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  /* Promotes GSAP-animated element to its own layer */
+  will-change: transform;
 }
 
 /* ── Availability Badge ──────────────────────────────── */

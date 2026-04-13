@@ -182,6 +182,7 @@
   background: linear-gradient(90deg, #6C63FF, #00D9FF);
   border-radius: 99px;
   transform-origin: left center;
+  will-change: transform; /* GSAP animates scaleX on this */
 }
 
 /* ── Timeline ────────────────────────────────────────── */
@@ -215,6 +216,7 @@
   padding: 0 0 48px 28px;
   display: flex;
   gap: 20px;
+  will-change: transform, opacity; /* GSAP slides these in on scroll */
 }
 
 .timeline-entry__dot {

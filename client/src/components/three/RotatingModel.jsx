@@ -1,15 +1,14 @@
-import { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, Float } from '@react-three/drei';
-import * as THREE from 'three';
+import { useRef, useEffect, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { MeshDistortMaterial, Float } from "@react-three/drei";
 
 /* ─────────────────────────────────────────────────────────────
    Crystalline core — an icosahedron with a distort shader.
-   It breathes and morphs slowly, giving it an organic premium feel.
+   PERF: Reduced detail 4→3 (saves ~40% triangles), shader speed 1.6→1.0.
 ───────────────────────────────────────────────────────────────*/
 function Crystal() {
-  const mesh  = useRef(null);
-  const wire  = useRef(null);
+  const mesh = useRef(null);
+  const wire = useRef(null);
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
@@ -19,20 +18,19 @@ function Crystal() {
     }
     if (wire.current) {
       wire.current.rotation.x = -t * 0.06;
-      wire.current.rotation.y =  t * 0.10;
+      wire.current.rotation.y = t * 0.1;
     }
   });
 
   return (
-    // Float gives a gentle sine-wave float (no GSAP needed)
     <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.6}>
-      {/* Solid distorted sphere */}
+      {/* Solid distorted sphere — detail 3 saves triangles vs detail 4 */}
       <mesh ref={mesh} castShadow>
-        <icosahedronGeometry args={[1.8, 4]} />
+        <icosahedronGeometry args={[1.8, 3]} />
         <MeshDistortMaterial
           color="#6C63FF"
-          distort={0.38}        /* morphing intensity */
-          speed={1.6}
+          distort={0.38}
+          speed={1.0} /* was 1.6 — cheaper per-frame shader cost */
           roughness={0.1}
           metalness={0.85}
           emissive="#200090"
@@ -42,7 +40,7 @@ function Crystal() {
         />
       </mesh>
 
-      {/* Outer wireframe — slightly larger, rotates counter */}
+      {/* Outer wireframe */}
       <mesh ref={wire} scale={1.22}>
         <icosahedronGeometry args={[1.8, 1]} />
         <meshBasicMaterial
@@ -55,7 +53,7 @@ function Crystal() {
 
       {/* Inner bright core */}
       <mesh scale={0.42}>
-        <icosahedronGeometry args={[1.8, 4]} />
+        <icosahedronGeometry args={[1.8, 2]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
       </mesh>
     </Float>
@@ -63,7 +61,7 @@ function Crystal() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Orbital ring — thin torus rotating around the crystal.
+   Orbital ring — PERF: segments reduced 100 → 48.
 ───────────────────────────────────────────────────────────────*/
 function OrbitalRing() {
   const ring = useRef(null);
@@ -78,7 +76,7 @@ function OrbitalRing() {
 
   return (
     <mesh ref={ring}>
-      <torusGeometry args={[2.7, 0.018, 16, 100]} />
+      <torusGeometry args={[2.7, 0.018, 12, 48]} />
       <meshBasicMaterial color="#6C63FF" transparent opacity={0.35} />
     </mesh>
   );
@@ -86,28 +84,49 @@ function OrbitalRing() {
 
 /* ─────────────────────────────────────────────────────────────
    RotatingModel — exported R3F canvas.
-   Sized to a square; caller controls dimensions via className.
+   PERF: DPR capped at 1.5 (was 2.0). Render loop paused via
+   IntersectionObserver when About section is off-screen — stops
+   burning GPU on an invisible canvas.
 ───────────────────────────────────────────────────────────────*/
-export default function RotatingModel({ className = '' }) {
+export default function RotatingModel({ className = "" }) {
   const isMobile = window.innerWidth < 768;
+  const wrapRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Only render when the About section canvas is in the viewport
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0, rootMargin: "100px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className={`rotating-model ${className}`} aria-hidden="true">
+    <div
+      ref={wrapRef}
+      className={`rotating-model ${className}`}
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0, 6], fov: 50 }}
-        dpr={[1, isMobile ? 1.5 : 2]}
+        dpr={[1, 1.5]} /* was [1,2] */
+        frameloop={isVisible ? "always" : "demand"} /* pause when off-screen */
         gl={{
           antialias: !isMobile,
           alpha: true,
-          powerPreference: 'high-performance',
+          powerPreference: "high-performance",
         }}
-        style={{ background: 'transparent' }}
+        style={{ background: "transparent" }}
       >
-        {/* Lighting */}
         <ambientLight intensity={0.4} />
-        <pointLight position={[5, 5, 5]}   intensity={2}   color="#6C63FF" />
+        <pointLight position={[5, 5, 5]} intensity={2} color="#6C63FF" />
         <pointLight position={[-5, -3, -5]} intensity={0.8} color="#00D9FF" />
-        <pointLight position={[0, -4, 3]}  intensity={0.5} color="#ffffff" />
+        <pointLight position={[0, -4, 3]} intensity={0.5} color="#ffffff" />
 
         <Crystal />
         {!isMobile && <OrbitalRing />}
