@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════════════════
+   Testimonials Section — Antony Theme
+   Line-art portraits, quotation callouts, and next/prev controls
+═══════════════════════════════════════════════════════════ */
+
+.testimonials-section {
+  position: relative;
+  padding: 100px 0;
+  background-color: var(--bg-primary);
+}
+
+.testimonials-wrapper {
+  background-color: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-dash);
+  padding: 36px 28px;
+  box-shadow: 0 4px 24px rgba(13, 19, 13, 0.03);
+}
+
+@media (min-width: 900px) {
+  .testimonials-wrapper {
+    padding: 50px 48px;
+  }
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+/* ── Left Portraits Row ──────────────────────────────────── */
+.testimonials-portraits {
+  display: flex;
+  gap: 16px;
+}
+
+.testimonial-author-card {
+  flex: 1;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-dash);
+  background-color: #faf8f5;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testimonial-author-card.is-active {
+  border-color: var(--color-orange);
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(233, 71, 34, 0.08);
+  transform: translateY(-2px);
+}
+
+.testimonial-author-img-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid rgba(13, 19, 13, 0.08);
+}
+
+.testimonial-author-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial-author-name {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.testimonial-author-role {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-orange);
+  letter-spacing: -0.02em;
+}
+
+/* ── Right Quote & Navigation ────────────────────────────── */
+.testimonial-quote-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.testimonial-quote-mark {
+  font-family: var(--font-heading);
+  font-size: 60px;
+  color: var(--color-orange);
+  line-height: 0.8;
+}
+
+.testimonial-quote-text {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 2.2vw, 24px);
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+
+.testimonial-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.testimonial-nav-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+
+.testimonial-nav-arrow:hover {
+  color: var(--color-orange);
+  background-color: rgba(233, 71, 34, 0.08);
+}

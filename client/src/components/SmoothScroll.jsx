@@ -16,13 +16,16 @@ export default function SmoothScroll({ children }) {
   const lenisRef = useRef(null);
 
   useEffect(() => {
+    // Ultra-smooth, responsive Lenis configuration (zero input lag, buttery 60-120fps)
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.85, // Snappy & responsive (avoids sluggish momentum delay)
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
+      gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      infinite: false,
     });
 
     lenisRef.current = lenis;
@@ -30,13 +33,14 @@ export default function SmoothScroll({ children }) {
     // ── Bridge: Lenis scroll → ScrollTrigger.update ──────────
     lenis.on('scroll', ScrollTrigger.update);
 
-    // ── Bridge: Use GSAP ticker instead of manual RAF ─────────
-    // This keeps GSAP and Lenis on the same animation frame.
-    function onTick(time) {
-      lenis.raf(time * 1000); // GSAP time is in seconds → Lenis wants ms
-    }
+    // ── Bridge: GSAP ticker drives Lenis RAF in perfect lockstep ──
+    const onTick = (time) => {
+      lenis.raf(time * 1000);
+    };
     gsap.ticker.add(onTick);
-    gsap.ticker.lagSmoothing(0); // Prevent GSAP from compensating for lag
+
+    // Allow GSAP to gracefully absorb minor frame hiccups without stutter
+    gsap.ticker.lagSmoothing(500, 33);
 
     // ── Anchor click interception ─────────────────────────────
     function handleAnchorClick(e) {
@@ -47,11 +51,11 @@ export default function SmoothScroll({ children }) {
       e.preventDefault();
       lenis.scrollTo(target, {
         offset: -64,
-        duration: 1.4,
+        duration: 0.9,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     }
-    document.addEventListener('click', handleAnchorClick);
+    document.addEventListener('click', handleAnchorClick, { passive: false });
 
     return () => {
       gsap.ticker.remove(onTick);

@@ -7,6 +7,9 @@ const projectController = require("../controllers/projectController");
 const skillController = require("../controllers/skillController");
 const contactController = require("../controllers/contactController");
 
+// Middlewares
+const { rateLimiter } = require("../middlewares/rateLimiter");
+
 // ── Health Check ─────────────────────────────────────────────
 router.get("/health", (req, res) => {
   res.status(200).json({
@@ -33,6 +36,10 @@ router.get("/db-test", async (req, res, next) => {
 // ── MVC Routes ────────────────────────────────────────────────
 router.get("/projects", projectController.getProjects);
 router.get("/skills", skillController.getSkills);
-router.post("/contact", contactController.submitContactForm);
+router.post(
+  "/contact",
+  rateLimiter({ windowMs: 15 * 60 * 1000, max: 5 }),
+  contactController.submitContactForm
+);
 
 module.exports = router;

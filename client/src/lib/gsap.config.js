@@ -20,6 +20,7 @@ gsap.defaults({
 // ── ScrollTrigger defaults ──────────────────────────────────
 ScrollTrigger.config({
   ignoreMobileResize: true, // prevents layout shift redraws on mobile
+  limitCallbacks: true,     // limits tick callbacks to improve scroll performance
 });
 
 /**
@@ -39,8 +40,8 @@ export function connectLenisToScrollTrigger(lenis) {
     lenis.raf(time * 1000); // GSAP time is in seconds, Lenis wants ms
   });
 
-  // Prevent GSAP's own ticker from doubling the RAF
-  gsap.ticker.lagSmoothing(0);
+  // Smooth out minor frame drops without stuttering
+  gsap.ticker.lagSmoothing(500, 33);
 }
 
 export { gsap, ScrollTrigger };

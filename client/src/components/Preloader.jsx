@@ -24,12 +24,12 @@ export default function Preloader({ onComplete }) {
         ease: "power4.out",
       });
 
-      // 2. Animate Bar
+      // 2. Animate Bar (GPU accelerated scaleX instead of width)
       tl.to(
         barRef.current,
         {
-          width: "100%",
-          duration: 1.2,
+          scaleX: 1,
+          duration: 1.0,
           ease: "power2.inOut",
         },
         "-=0.4",
@@ -67,21 +67,19 @@ export default function Preloader({ onComplete }) {
         "-=0.2",
       );
     },
-    [],
     containerRef,
+    [],
   );
 
   return (
     <div ref={containerRef} className="preloader" aria-hidden="true">
       <div className="preloader__content">
         <div ref={textRef} className="preloader__logo">
-          <span>W</span>
+          <span>V</span>
           <span>E</span>
-          <span>L</span>
-          <span>C</span>
-          <span>O</span>
-          <span>M</span>
-          <span>E</span>
+          <span>N</span>
+          <span>I</span>
+          <span>S</span>
         </div>
         <div className="preloader__bar-container">
           <div ref={barRef} className="preloader__bar" />

@@ -1,0 +1,203 @@
+/* ═══════════════════════════════════════════════════════════
+   CTA Banner & Contact Form — Antony Theme
+   Foliage cutout background with "LET'S BUILD SOMETHING GREAT TOGETHER"
+═══════════════════════════════════════════════════════════ */
+
+.contact-cta-section {
+  position: relative;
+  padding: 80px 0 100px;
+  background-color: var(--bg-primary);
+}
+
+.cta-banner-wrapper {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-dash);
+  overflow: hidden;
+  box-shadow: 0 4px 28px rgba(13, 19, 13, 0.04);
+}
+
+.cta-banner-top {
+  position: relative;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px 100px;
+  z-index: 2;
+}
+
+.cta-foliage-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom center;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cta-banner-headline {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 6vw, 76px);
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  max-width: 800px;
+  margin-bottom: 28px;
+}
+
+.cta-btn-book {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-orange);
+  color: #ffffff;
+  padding: 14px 32px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(233, 71, 34, 0.35);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.cta-btn-book:hover {
+  background-color: var(--color-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(233, 71, 34, 0.45);
+}
+
+/* ── Inline Contact Form Drawer ──────────────────────────── */
+.cta-form-drawer {
+  background-color: #faf8f5;
+  border-top: 1px solid var(--border-dash);
+  padding: 48px 24px;
+  position: relative;
+  z-index: 3;
+}
+
+@media (min-width: 768px) {
+  .cta-form-drawer {
+    padding: 60px 48px;
+  }
+}
+
+.cta-form-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.cta-form-title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.cta-form-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-subtle);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.cta-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .cta-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cta-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cta-form-field.full {
+  grid-column: 1 / -1;
+}
+
+.cta-form-label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-dark);
+}
+
+.cta-form-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-dash);
+  background-color: #ffffff;
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.cta-form-input:focus {
+  border-color: var(--color-orange);
+  box-shadow: 0 0 0 3px rgba(233, 71, 34, 0.15);
+}
+
+.cta-form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.cta-form-submit {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 28px;
+  font-size: 16px;
+  border: none;
+}
+
+.cta-form-msg {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.cta-form-msg--success {
+  background-color: rgba(31, 201, 50, 0.12);
+  color: var(--color-forest-green);
+  border: 1px solid rgba(31, 201, 50, 0.3);
+}
+
+.cta-form-msg--error {
+  background-color: rgba(233, 71, 34, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(233, 71, 34, 0.3);
+}

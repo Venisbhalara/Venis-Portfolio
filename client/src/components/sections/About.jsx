@@ -1,6 +1,6 @@
-import { useRef, lazy, Suspense } from "react";
+import { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { useGSAP } from "../../hooks/useGSAP";
-import { gsap, ScrollTrigger } from "../../lib/gsap.config";
+import { gsap } from "../../lib/gsap.config";
 
 const RotatingModel = lazy(() => import("../three/RotatingModel"));
 
@@ -15,37 +15,11 @@ const STATS = [
 ];
 
 const SKILLS = [
-  { name: "JavaScript", pct: 95 },
-  { name: "Node.js", pct: 92 },
-  { name: "Express.js", pct: 88 },
-  { name: "MySQL", pct: 82 },
-  { name: "MongoDB", pct: 76 },
-];
-
-const TIMELINE = [
-  {
-    year: "2022 – Now",
-    role: "Senior SDE",
-    company: "Amazon",
-    detail:
-      "AWS S3 Core Infrastructure — reduced P99 latency from 240ms → 38ms.",
-    color: "#6C63FF",
-  },
-  {
-    year: "2020 – 2022",
-    role: "SDE II",
-    company: "Flipkart",
-    detail:
-      "Built real-time fraud detection pipeline · 1M+ transactions / day.",
-    color: "#00D9FF",
-  },
-  {
-    year: "2018 – 2020",
-    role: "SDE I",
-    company: "Razorpay",
-    detail: "Core API team · webhook delivery system · 99.99 % reliability.",
-    color: "#918fa1",
-  },
+  { name: "Node.js & TypeScript", pct: 94 },
+  { name: "Distributed Systems & Go", pct: 90 },
+  { name: "Cloud Infrastructure (AWS & Docker)", pct: 88 },
+  { name: "SQL & NoSQL (MySQL, DynamoDB)", pct: 86 },
+  { name: "High-Throughput APIs & Event Streams", pct: 92 },
 ];
 
 /* ─────────────────────────────────────────────────────────────
@@ -54,7 +28,6 @@ const TIMELINE = [
 function SkillBar({ name, pct, index }) {
   const barRef = useRef(null);
 
-  // Animate on scroll using ScrollTrigger.create
   useGSAP(
     (ctx) => {
       ctx.add(() => {
@@ -94,66 +67,24 @@ function SkillBar({ name, pct, index }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Timeline Entry
-───────────────────────────────────────────────────────────────*/
-function TimelineEntry({ entry, index }) {
-  const ref = useRef(null);
-
-  useGSAP(
-    (ctx) => {
-      ctx.add(() => {
-        gsap.from(ref.current, {
-          x: -32,
-          opacity: 0,
-          duration: 0.75,
-          ease: "power3.out",
-          delay: index * 0.12,
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 88%",
-            toggleActions: "play none none none",
-          },
-        });
-      });
-    },
-    ref,
-    [],
-  );
-
-  return (
-    <div ref={ref} className="timeline-entry">
-      {/* Vertical connector dot */}
-      <div
-        className="timeline-entry__dot"
-        style={{ background: entry.color }}
-      />
-
-      <div className="timeline-entry__body">
-        <p className="timeline-entry__year" style={{ color: entry.color }}>
-          {entry.year}
-        </p>
-        <h4 className="timeline-entry__role">
-          {entry.role}
-          <span className="timeline-entry__company"> · {entry.company}</span>
-        </h4>
-        <p className="timeline-entry__detail">{entry.detail}</p>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
    About — main exported section
 ───────────────────────────────────────────────────────────────*/
 export default function About() {
-  const isDesktop =
-    typeof window !== "undefined" ? window.innerWidth > 768 : true;
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== "undefined" ? window.innerWidth > 768 : true,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 768);
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const bioRef = useRef(null);
   const statsRef = useRef(null);
   const skillsRef = useRef(null);
-  const timelineRef = useRef(null);
 
   /* ── Scroll-triggered text reveals ──────────────────────*/
   useGSAP(
@@ -168,7 +99,7 @@ export default function About() {
           scrollTrigger: { trigger: ".about-label", start: "top 88%" },
         });
 
-        // Heading — split into lines via wrapping
+        // Heading
         gsap.from(headingRef.current, {
           y: 40,
           opacity: 0,
@@ -177,7 +108,7 @@ export default function About() {
           scrollTrigger: { trigger: headingRef.current, start: "top 85%" },
         });
 
-        // Bio paragraph — character-theatrical entrance
+        // Bio paragraphs
         gsap.from(".about-bio__line", {
           y: 22,
           opacity: 0,
@@ -205,24 +136,6 @@ export default function About() {
           ease: "power3.out",
           scrollTrigger: { trigger: skillsRef.current, start: "top 88%" },
         });
-
-        // Timeline heading
-        gsap.from(".about-timeline__title", {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power3.out",
-          scrollTrigger: { trigger: timelineRef.current, start: "top 88%" },
-        });
-
-        // Timeline line draw
-        gsap.from(".timeline-line", {
-          scaleY: 0,
-          transformOrigin: "top center",
-          duration: 1.2,
-          ease: "power3.inOut",
-          scrollTrigger: { trigger: timelineRef.current, start: "top 80%" },
-        });
       });
     },
     sectionRef,
@@ -235,9 +148,9 @@ export default function About() {
         {/* ── Header ────────────────────────────────────── */}
         <p className="about-label section-label">About Me</p>
         <h2 ref={headingRef} className="about-heading">
-          Crafting exceptional digital
+          Engineering scalable, resilient
           <br />
-          experiences for over 6 years.
+          systems for high-load platforms.
         </h2>
 
         {/* ── Two-column: Bio + 3D Model ─────────────────*/}
@@ -245,20 +158,20 @@ export default function About() {
           {/* Left — Bio */}
           <div ref={bioRef} className="about-bio">
             <p className="about-bio__line">
-              I'm a Senior Full‑Stack Engineer with deep expertise in scalable
-              distributed systems, cloud infrastructure, and high‑performance
-              web applications.
+              I'm a Senior Backend &amp; Full‑Stack Engineer specialized in
+              architecting scalable distributed systems, cloud infrastructure,
+              and high‑performance web services.
             </p>
             <p className="about-bio__line">
-              I've shipped products used by{" "}
-              <strong>millions of users across 40+ countries</strong> and
-              consistently optimised critical paths that directly impacted
-              revenue and reliability.
+              Over the past 6+ years, I've designed architectures supporting{" "}
+              <strong>millions of users across global regions</strong>,
+              consistently optimizing critical paths to reduce P99 latencies,
+              prevent cascading service failures, and guarantee 99.9% uptime.
             </p>
             <p className="about-bio__line">
-              Currently building next‑generation developer tooling at Amazon,
-              with a focus on S3 core infrastructure and distributed metadata
-              services.
+              My engineering philosophy focuses on clean domain boundaries,
+              event-driven streaming pipelines, robust database indexing, and
+              observable cloud systems with automated recovery.
             </p>
 
             {/* Stats */}
@@ -292,22 +205,10 @@ export default function About() {
 
         {/* ── Skills ────────────────────────────────────── */}
         <div ref={skillsRef} className="about-skills">
-          <h3 className="about-skills__title">Core Expertise</h3>
+          <h3 className="about-skills__title">Core Technical Competencies</h3>
           <div className="about-skills__grid">
             {SKILLS.map((s, i) => (
               <SkillBar key={s.name} {...s} index={i} />
-            ))}
-          </div>
-        </div>
-
-        {/* ── Timeline ──────────────────────────────────── */}
-        <div ref={timelineRef} className="about-timeline">
-          <h3 className="about-timeline__title">Career Journey</h3>
-
-          <div className="timeline">
-            <div className="timeline-line" aria-hidden="true" />
-            {TIMELINE.map((entry, i) => (
-              <TimelineEntry key={entry.company} entry={entry} index={i} />
             ))}
           </div>
         </div>

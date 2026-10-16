@@ -2,6 +2,50 @@ import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+// Deterministic pseudo-random number generator (Mulberry32)
+// Guarantees pure/idempotent execution for React 19 without calling global Math.random()
+function createPRNG(seed = 1337) {
+  let s = seed | 0;
+  return function () {
+    s = (s + 0x6d2b79f5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function generateParticleData(count) {
+  const prng = createPRNG(1337);
+  const pos = new Float32Array(count * 3);
+  const col = new Float32Array(count * 3);
+
+  const colorA = new THREE.Color("#6C63FF"); // primary violet
+  const colorB = new THREE.Color("#00D9FF"); // cyan accent
+  const colorC = new THREE.Color("#ffffff"); // white
+
+  for (let i = 0; i < count; i++) {
+    const r = 8 + prng() * 14;
+    const theta = prng() * Math.PI * 2;
+    const phi = Math.acos(2 * prng() - 1);
+
+    pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    pos[i * 3 + 2] = r * Math.cos(phi);
+
+    const t = prng();
+    const c =
+      t < 0.5
+        ? colorA.clone().lerp(colorB, t * 2)
+        : colorB.clone().lerp(colorC, (t - 0.5) * 2);
+
+    col[i * 3] = c.r;
+    col[i * 3 + 1] = c.g;
+    col[i * 3 + 2] = c.b;
+  }
+
+  return [pos, col];
+}
+
 /* ─────────────────────────────────────────────────────────────
    Particles mesh — drifting points in a sphere.
    PERF: Reduced count (700 desktop / 300 mobile), capped DPR at 1.5.
@@ -10,37 +54,8 @@ function Particles({ count = 700 }) {
   const mesh = useRef(null);
   const light = useRef(null);
 
-  // Build random positions once
-  const [positions, colors] = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    const col = new Float32Array(count * 3);
-
-    const colorA = new THREE.Color("#6C63FF"); // primary violet
-    const colorB = new THREE.Color("#00D9FF"); // cyan accent
-    const colorC = new THREE.Color("#ffffff"); // white
-
-    for (let i = 0; i < count; i++) {
-      const r = 8 + Math.random() * 14;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      pos[i * 3 + 2] = r * Math.cos(phi);
-
-      const t = Math.random();
-      const c =
-        t < 0.5
-          ? colorA.clone().lerp(colorB, t * 2)
-          : colorB.clone().lerp(colorC, (t - 0.5) * 2);
-
-      col[i * 3] = c.r;
-      col[i * 3 + 1] = c.g;
-      col[i * 3 + 2] = c.b;
-    }
-
-    return [pos, col];
-  }, [count]);
+  // Build deterministic positions once
+  const [positions, colors] = useMemo(() => generateParticleData(count), [count]);
 
   // Slow orbital rotation each frame
   useFrame((state) => {
@@ -120,8 +135,8 @@ function FloatingRings() {
    via IntersectionObserver — saves GPU when user scrolls away.
 ───────────────────────────────────────────────────────────────*/
 export default function ParticleField() {
-  const isMobile = window.innerWidth < 768;
-  const count = isMobile ? 300 : 700;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const count = isMobile ? 200 : 450;
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
 

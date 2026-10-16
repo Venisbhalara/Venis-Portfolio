@@ -1,5 +1,7 @@
 /* ═══════════════════════════════════════════════════════════
-   Navbar — Obsidian Kinetic
+   Navbar — Antony Theme (Precision Kinetic Edition)
+   Tactile magnetic sliding pill, architectural indices,
+   seamless canvas integration, and diagonal kinetic CTA
 ═══════════════════════════════════════════════════════════ */
 
 .navbar {
@@ -7,22 +9,25 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  height: 76px;
   z-index: 100;
-  transition:
-    background 0.4s ease,
-    backdrop-filter 0.4s ease,
-    border-bottom 0.4s ease;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid transparent;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .navbar--scrolled {
-  background: rgba(14, 14, 14, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(108, 99, 255, 0.15);
+  background: rgba(245, 242, 235, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(13, 19, 13, 0.08);
+  box-shadow: 0 8px 24px -8px rgba(13, 19, 13, 0.06);
 }
 
 .navbar-inner {
@@ -32,178 +37,307 @@
   width: 100%;
 }
 
-/* ── Logo ────────────────────────────────────────────────── */
-.navbar-logo {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: #e5e2e1;
-  text-decoration: none;
+/* ── Left: Dark Monogram Emblem ─────────────────────────── */
+.navbar-left {
   display: flex;
   align-items: center;
 }
 
-.navbar-logo span {
-  color: #6c63ff;
-}
-
-/* ── Desktop Nav Links ───────────────────────────────────── */
-.navbar-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-link {
-  font-size: 14px;
-  font-weight: 500;
-  color: #918fa1;
+.navbar-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--color-text-dark);
+  color: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   text-decoration: none;
+  box-shadow: 0 4px 14px rgba(13, 19, 13, 0.12);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
   position: relative;
-  transition: color 0.3s ease;
+  flex-shrink: 0;
 }
 
-.navbar-link:hover,
-.navbar-link.active {
-  color: #ffffff;
+.navbar-logo:hover {
+  transform: scale(1.06) rotate(-3deg);
+  box-shadow: 0 6px 18px rgba(233, 71, 34, 0.28);
 }
 
-/* Accent dot indicator for active link */
-.navbar-link::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
+.navbar-logo-text {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: #F5F2EB;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.navbar-logo-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #00d9ff;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--color-orange);
+  margin-left: 2px;
+  margin-bottom: 4px;
 }
 
-.navbar-link.active::after {
-  transform: translateX(-50%) scale(1);
+/* ── Center: Architectural Kinetic Glass Capsule ─────────── */
+.navbar-center {
+  display: none;
 }
 
-/* ── Mobile Menu Button ──────────────────────────────────── */
+@media (min-width: 900px) {
+  .navbar-center {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(13, 19, 13, 0.08);
+    border-radius: 9999px;
+    padding: 4px;
+    box-shadow: 0 6px 24px -4px rgba(13, 19, 13, 0.04),
+                0 1px 3px rgba(13, 19, 13, 0.02),
+                inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+  }
+}
+
+/* Magnetic Sliding Pill */
+.nav-sliding-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  background: var(--color-text-dark);
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(13, 19, 13, 0.18),
+              inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1.15),
+              width 0.35s cubic-bezier(0.16, 1, 0.3, 1.15),
+              opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.navbar-nav-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+  position: relative;
+  z-index: 2;
+}
+
+.navbar-nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-link {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  text-decoration: none;
+  letter-spacing: -0.015em;
+  color: #4f584e;
+  transition: color 0.22s ease, transform 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.navbar-link:active {
+  transform: scale(0.96);
+}
+
+/* Micro-index (01, 02, etc.) */
+.nav-link__num {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: rgba(13, 19, 13, 0.38);
+  letter-spacing: -0.02em;
+  transition: color 0.22s ease;
+}
+
+/* Main label text */
+.nav-link__text {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color 0.22s ease;
+}
+
+/* Highlighted state (active or hovered) */
+.navbar-link.is-highlighted .nav-link__text {
+  color: #F5F2EB;
+  font-weight: 600;
+}
+
+.navbar-link.is-highlighted .nav-link__num {
+  color: var(--color-orange);
+}
+
+/* ── Right: Signature Antony Terracotta Pill Button ───────── */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-btn-call {
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-orange);
+  color: #ffffff;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(233, 71, 34, 0.28);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.navbar-btn-call:hover {
+  background-color: var(--color-orange-hover);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 24px rgba(233, 71, 34, 0.4);
+}
+
+.navbar-btn-call:active {
+  transform: translateY(0);
+}
+
+.navbar-btn-call__arrow {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-btn-call:hover .navbar-btn-call__arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ── Mobile Hamburger Toggle ─────────────────────────────── */
 .menu-toggle {
   display: none;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(13, 19, 13, 0.1);
+  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
   cursor: pointer;
-  padding: 8px;
-  z-index: 200; /* above mobile overlay */
+  box-shadow: 0 2px 6px rgba(13, 19, 13, 0.03);
+  transition: all 0.2s ease;
+}
+
+.menu-toggle:hover {
+  border-color: rgba(13, 19, 13, 0.2);
+}
+
+@media (max-width: 899px) {
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .menu-toggle-icon {
+  width: 18px;
+  height: 12px;
   position: relative;
-  width: 24px;
-  height: 2px;
-  background: #e5e2e1;
-  transition: background 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.menu-toggle-icon::before,
-.menu-toggle-icon::after {
-  content: "";
-  position: absolute;
-  left: 0;
+.menu-toggle-icon span {
+  display: block;
+  height: 1.5px;
   width: 100%;
-  height: 100%;
-  background: #e5e2e1;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--color-text-dark);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.menu-toggle-icon::before {
-  transform: translateY(-6px);
-}
-.menu-toggle-icon::after {
-  transform: translateY(6px);
+.menu-toggle--open .menu-toggle-icon span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
 }
 
-/* Open state for hamburger */
-.menu-toggle--open .menu-toggle-icon {
-  background: transparent;
-}
-.menu-toggle--open .menu-toggle-icon::before {
-  transform: rotate(45deg);
-}
-.menu-toggle--open .menu-toggle-icon::after {
-  transform: rotate(-45deg);
+.menu-toggle--open .menu-toggle-icon span:nth-child(2) {
+  opacity: 0;
 }
 
-/* ── Mobile Overlay Menu ─────────────────────────────────── */
+.menu-toggle--open .menu-toggle-icon span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+/* ── Mobile Drawer ───────────────────────────────────────── */
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: #0e0e0e;
+  top: 72px;
+  background: rgba(245, 242, 235, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   z-index: 99;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  padding: 36px 24px;
+  border-top: 1px solid rgba(13, 19, 13, 0.08);
   opacity: 0;
-  pointer-events: none; /* hidden by default */
+  pointer-events: none;
   visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .mobile-menu--open {
-  /* Toggled via GSAP instead of pure CSS for smoother animation, 
-     but keeping basics here */
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
 }
 
 .mobile-nav-links {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  list-style: none;
-  text-align: center;
+  gap: 16px;
   padding: 0;
   margin: 0;
 }
 
 .mobile-nav-link {
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #918fa1;
+  font-family: var(--font-heading);
+  font-size: 28px;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
+  letter-spacing: -0.02em;
+  display: inline-block;
 }
 
-.mobile-nav-link:hover,
-.mobile-nav-link.active {
-  color: #e5e2e1;
-}
-
-/* Accent for mobile */
-.mobile-nav-link.active {
-  position: relative;
-}
-.mobile-nav-link.active::before {
-  content: "";
-  position: absolute;
-  left: -24px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #00d9ff;
-}
-
-/* ── Responsive ──────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .navbar-links {
-    display: none;
-  }
-  .menu-toggle {
-    display: block;
-  }
+.mobile-nav-link.active,
+.mobile-nav-link:hover {
+  color: var(--color-orange);
+  transform: translateX(4px);
 }

@@ -18,9 +18,24 @@ import { gsap, ScrollTrigger } from '../lib/gsap.config';
  *     });
  *   }, containerRef, []);
  */
-export function useGSAP(animationFn, scopeRef, deps = []) {
+export function useGSAP(animationFn, arg2, arg3) {
+  let scopeRef = null;
+  let deps = [];
+
+  if (Array.isArray(arg2)) {
+    deps = arg2;
+    scopeRef = arg3;
+  } else if (arg2 && typeof arg2 === 'object' && ('current' in arg2 || arg2.nodeType)) {
+    scopeRef = arg2;
+    deps = Array.isArray(arg3) ? arg3 : [];
+  } else if (Array.isArray(arg3)) {
+    deps = arg3;
+    scopeRef = arg2;
+  }
+
   useEffect(() => {
-    const ctx = gsap.context(animationFn, scopeRef?.current);
+    const scopeElement = scopeRef?.current || (scopeRef?.nodeType ? scopeRef : undefined);
+    const ctx = gsap.context(animationFn, scopeElement);
     return () => ctx.revert(); // cleanup all animations in this context
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
@@ -167,6 +182,7 @@ export function useTextReveal(vars = {}) {
     });
 
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return ref;

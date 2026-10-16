@@ -15,7 +15,7 @@ export default function ScrollProgress() {
         trigger: document.body,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.1, // Smoothly catch up
+        scrub: true, // Instantaneous 0-lag real-time synchronization
       }
     });
   }, [], barRef);

@@ -4,67 +4,69 @@ import { useGSAP } from "../hooks/useGSAP";
 import "../styles/navbar.css";
 
 const NAV_ITEMS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { num: "01", label: "Home", href: "#home" },
+  { num: "02", label: "Stats", href: "#stats" },
+  { num: "03", label: "Case Study", href: "#case-study" },
+  { num: "04", label: "Capabilities", href: "#capabilities" },
+  { num: "05", label: "Journal", href: "#journal" },
+  { num: "06", label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const navRef = useRef(null);
-  const mobileMenuRef = useRef(null);
+  const navContainerRef = useRef(null);
+  const itemRefs = useRef([]);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#home");
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
 
-  // GSAP entrance animation (slide down)
+  // Entrance animation
   useGSAP(
     () => {
       gsap.from(navRef.current, {
-        y: -80,
+        y: -60,
         opacity: 0,
-        duration: 1,
+        duration: 0.8,
         ease: "power3.out",
-        delay: 0.5, // wait for preloader a bit
+        delay: 0.2,
       });
     },
     [],
-    navRef,
+    navRef
   );
 
-  // Monitor Scroll for glass effect — RAF-throttled so it never blocks scroll
+  // High-performance scroll listener (zero re-renders when state hasn't changed)
   useEffect(() => {
-    let rafId = null;
+    let ticking = false;
     const handleScroll = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 50);
-        rafId = null;
-      });
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isPast = window.scrollY > 40;
+          setScrolled((prev) => (prev !== isPast ? isPast : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Monitor Active Section via IntersectionObserver
+  // Section highlight listener
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the overlapping section
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(`#${entry.target.id}`);
           }
         });
       },
-      { rootMargin: "-40% 0px -40% 0px" },
+      { rootMargin: "-30% 0px -50% 0px" }
     );
 
-    // Observe all sections matching nav item hrefs
     NAV_ITEMS.forEach((item) => {
       const el = document.querySelector(item.href);
       if (el) observer.observe(el);
@@ -73,39 +75,22 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Handle mobile menu GSAP animation
+  // Calculate sliding pill position only when target index actually changes
+  const activeIdx = NAV_ITEMS.findIndex((item) => item.href === activeSection);
+  const targetIdx = hoveredIdx !== null ? hoveredIdx : (activeIdx !== -1 ? activeIdx : 0);
+
   useEffect(() => {
-    if (menuOpen) {
-      // Open animation
-      gsap.to(mobileMenuRef.current, {
-        autoAlpha: 1, // handles visibility/opacity
-        duration: 0.4,
-        ease: "power2.out",
+    const targetEl = itemRefs.current[targetIdx];
+    if (targetEl && navContainerRef.current) {
+      const containerRect = navContainerRef.current.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      setIndicatorStyle({
+        left: targetRect.left - containerRect.left,
+        width: targetRect.width,
+        opacity: 1,
       });
-      // Stagger links in
-      gsap.fromTo(
-        ".mobile-nav-link",
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.05,
-          duration: 0.4,
-          ease: "power2.out",
-          delay: 0.2,
-        },
-      );
-      document.body.style.overflow = "hidden"; // prevent scroll
-    } else {
-      // Close animation
-      gsap.to(mobileMenuRef.current, {
-        autoAlpha: 0,
-        duration: 0.3,
-        ease: "power2.in",
-      });
-      document.body.style.overflow = "";
     }
-  }, [menuOpen]);
+  }, [targetIdx]);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
@@ -118,53 +103,104 @@ export default function Navbar() {
         aria-label="Main Navigation"
       >
         <div className="container navbar-inner">
-          {/* Logo */}
-          <a href="#home" className="navbar-logo" aria-label="Home">
-            VB<span>.</span>
-          </a>
+          {/* Left: Refined Monogram Logo */}
+          <div className="navbar-left">
+            <a href="#home" className="navbar-logo" aria-label="Venis Bhalara Home">
+              <span className="navbar-logo-text">VB</span>
+              <span className="navbar-logo-dot" aria-hidden="true" />
+            </a>
+          </div>
 
-          {/* Desktop Links */}
-          <ul className="navbar-links">
-            {NAV_ITEMS.map(({ label, href }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  className={`navbar-link ${activeSection === href ? "active" : ""}`}
-                  onClick={() => setActiveSection(href)}
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Hamburger Button */}
-          <button
-            className={`menu-toggle ${menuOpen ? "menu-toggle--open" : ""}`}
-            onClick={toggleMenu}
-            aria-label="Toggle Navigation Menu"
-            aria-expanded={menuOpen}
+          {/* Center: Precision Architectural Frosted Glass Capsule */}
+          <nav
+            ref={navContainerRef}
+            className="navbar-center"
+            aria-label="Primary Navigation"
+            onMouseLeave={() => setHoveredIdx(null)}
           >
-            <div className="menu-toggle-icon" />
-          </button>
+            {/* Sliding Magnetic Pill Indicator */}
+            <div
+              className="nav-sliding-pill"
+              style={{
+                left: `${indicatorStyle.left}px`,
+                width: `${indicatorStyle.width}px`,
+                opacity: indicatorStyle.opacity,
+              }}
+              aria-hidden="true"
+            />
+
+            <ul className="navbar-nav-list">
+              {NAV_ITEMS.map((item, idx) => {
+                const isActive = activeSection === item.href;
+                const isHovered = hoveredIdx === idx;
+                const isHighlighted = isHovered || (hoveredIdx === null && isActive);
+
+                return (
+                  <li key={item.href} className="navbar-nav-item">
+                    <a
+                      ref={(el) => (itemRefs.current[idx] = el)}
+                      href={item.href}
+                      className={`navbar-link ${isHighlighted ? "is-highlighted" : ""} ${isActive ? "is-active" : ""}`}
+                      onMouseEnter={() => setHoveredIdx(idx)}
+                      onClick={() => setActiveSection(item.href)}
+                    >
+                      <span className="nav-link__num">{item.num}</span>
+                      <span className="nav-link__text">{item.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Right: Signature Antony Book a Call CTA & Mobile Toggle */}
+          <div className="navbar-right">
+            <a href="#contact" className="navbar-btn-call">
+              <span className="navbar-btn-call__label">Book a Call</span>
+              <span className="navbar-btn-call__arrow" aria-hidden="true">↗</span>
+            </a>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              className={`menu-toggle ${menuOpen ? "menu-toggle--open" : ""}`}
+              onClick={toggleMenu}
+              aria-label="Toggle Navigation Menu"
+              aria-expanded={menuOpen}
+            >
+              <div className="menu-toggle-icon">
+                <span />
+                <span />
+                <span />
+              </div>
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
-      <nav ref={mobileMenuRef} className="mobile-menu" aria-hidden={!menuOpen}>
+      {/* Mobile Drawer Menu */}
+      <nav
+        className={`mobile-menu ${menuOpen ? "mobile-menu--open" : ""}`}
+        aria-hidden={!menuOpen}
+      >
         <ul className="mobile-nav-links">
-          {NAV_ITEMS.map(({ label, href }) => (
-            <li key={label}>
+          {NAV_ITEMS.map((item) => (
+            <li key={item.href}>
               <a
-                href={href}
-                className={`mobile-nav-link ${activeSection === href ? "active" : ""}`}
+                href={item.href}
+                className={`mobile-nav-link ${activeSection === item.href ? "active" : ""}`}
                 onClick={closeMenu}
               >
-                {label}
+                {item.label}
               </a>
             </li>
           ))}
         </ul>
+
+        <div>
+          <a href="#contact" className="btn-primary" onClick={closeMenu} style={{ width: "100%" }}>
+            Book a Call
+          </a>
+        </div>
       </nav>
     </>
   );

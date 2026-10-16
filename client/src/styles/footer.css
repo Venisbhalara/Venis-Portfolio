@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════
+   Footer — Antony Theme
+   Multi-column directory, copyright, and massive outline watermark
+═══════════════════════════════════════════════════════════ */
+
+.footer-section {
+  position: relative;
+  background-color: var(--bg-primary);
+  padding: 80px 0 40px;
+  overflow: hidden;
+  border-top: 1px solid var(--border-dash);
+}
+
+.footer-directory-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .footer-directory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-col-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-link {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-subtle);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.footer-link:hover {
+  color: var(--color-orange);
+  transform: translateX(3px);
+}
+
+/* ── Copyright & Credits ─────────────────────────────────── */
+.footer-bottom-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(13, 19, 13, 0.08);
+  font-size: 14px;
+  color: var(--color-text-subtle);
+  margin-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* ── Giant Outline Watermark Typography ──────────────────── */
+.footer-watermark-wrap {
+  width: 100%;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+  padding: 8px 0 16px;
+}
+
+.footer-watermark-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.footer-watermark-svg-text {
+  font-family: 'Anton', var(--font-heading), sans-serif;
+  font-size: 152px;
+  font-weight: 400;
+  text-transform: uppercase;
+  fill: none;
+  stroke: url(#footerWatermarkGrad);
+  stroke-width: 1.6px;
+  stroke-dasharray: 4.5 3.5;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}

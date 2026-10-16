@@ -127,8 +127,8 @@ export default function Experience() {
                 <div key={skill.id} className="skill-tag">{skill.name}</div>
               ))
             ) : (
-              // Fallback if API is slow/down
-              ['Node.js', 'React', 'TypeScript', 'AWS', 'Kafka', 'Redis', 'MySQL'].map(s => (
+              // Comprehensive fallback if API is slow or offline
+              ['Node.js', 'Go', 'TypeScript', 'AWS (S3, Lambda)', 'Docker', 'Kubernetes', 'Apache Kafka', 'Redis', 'MySQL', 'MongoDB', 'GraphQL', 'Terraform', 'gRPC', 'Prometheus'].map(s => (
                 <div key={s} className="skill-tag">{s}</div>
               ))
             )}

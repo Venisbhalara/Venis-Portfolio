@@ -71,7 +71,12 @@ export default function Contact() {
       setTimeout(() => setStatus("idle"), 5000);
     } catch (err) {
       setStatus("error");
-      setErrorMessage(err.message);
+      const isNetworkErr = err.name === "TypeError" || err.message?.includes("fetch");
+      setErrorMessage(
+        isNetworkErr
+          ? "Server connection offline. Please reach out directly at vasubhalara44@gmail.com"
+          : (err.message || "Failed to submit message. Please try again.")
+      );
     }
   };
 
@@ -95,12 +100,12 @@ export default function Contact() {
               something great.
             </h2>
             <p className="contact-text">
-              I'm currently exploring new opportunities for Senior/Staff
-              Engineering roles. If you have an exciting challenge, I'd love to
-              hear about it.
+              I'm currently exploring new opportunities for Senior/Lead
+              Backend &amp; Full-Stack Engineering roles. If you have an exciting challenge,
+              I'd love to connect.
             </p>
 
-            <a href="mailto:[vasubhalara44@gmail.com]" className="contact-link">
+            <a href="mailto:vasubhalara44@gmail.com" className="contact-link">
               vasubhalara44@gmail.com
               <svg
                 width="20"
